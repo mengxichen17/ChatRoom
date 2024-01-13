@@ -25,7 +25,6 @@ const database = {
 
 app.use(bodyParser.json());
 app.use(cors());
-// app.use(express.bodyParser());
 
 app.get('/', (req, res) => {
     res.send(database.users);
