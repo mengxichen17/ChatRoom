@@ -15,6 +15,7 @@ class App extends Component {
       input: '',
       route: 'signin',
       isSignedIn: false,
+      chatHistory: '',
       user: {
         name: '',
         entries: 0,
@@ -24,7 +25,7 @@ class App extends Component {
   }
 
   loadUser = (data) => {
-    this.setState({data: {
+    this.setState({user: {
       id: data.id,
       name: data.name,
       entries: data.entries,
@@ -65,7 +66,9 @@ class App extends Component {
         <Logo />
         { route === 'home'
           ? <div>
-          <Rank />
+          <Rank 
+            chatHistory={this.state.chatHistory}
+          />
           <ImageLinkForm 
             onInputChange={this.onInputChange} 
             onButtonSubmit={this.onButtonSubmit}
@@ -74,7 +77,7 @@ class App extends Component {
         </div>
           : (
             route === 'signin'
-            ? <Signin onRouteChange={this.onRouteChange}/>
+            ? <Signin loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
             : <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
           )
           
