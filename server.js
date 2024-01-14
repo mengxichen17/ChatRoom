@@ -6,6 +6,7 @@ const knex = require('knex');
 const { createServer } = require('node:http');
 const { join } = require('node:path');
 const { Server } = require('socket.io');
+const PORT = 4000;
 
 
 const db = knex({
@@ -23,9 +24,87 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server);
 
-
 app.use(bodyParser.json());
 app.use(cors());
+
+const http = require('http').Server(app);
+
+const socketIO = require('socket.io')(http, {
+    cors: {
+        origin: "http://localhost:3000"
+    }
+});
+
+
+
+socketIO.on('connection', (socket) => {
+    console.log(`⚡: ${socket.id} user just connected!`);
+
+    // getChatHistory()
+    //     .then(chatHistory => {
+    //         console.log(chatHistory.length)
+    //         socket.emit('initialization', chatHistory);
+    //     })
+    //     .catch(err => console.error("Error"))
+
+    //Listens and logs the message to the console
+    socket.on('message', (data) => {
+        storeMessage(data);
+        // getChatHistory()
+        //     .then(chatHistory => {
+        //         socketIO.emit('messageResponse', chatHistory);
+        //     })
+        //     .catch(err => console.error("Error"))
+        socketIO.emit('messageResponse', data);
+    });
+
+    socket.on('disconnect', () => {
+      console.log('🔥: A user disconnected');
+    });
+});
+
+function storeMessage(data) {
+    fetch('http://localhost:4000/chathistory', {
+            method: 'post',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                name: data.name,
+                message: data.message,
+                time: new Date()
+            })
+        })
+        .then(response => response.json())
+        .then(message => {
+            if (message) {
+                console.log(message);
+            }
+        })
+        .catch(err => res.status(400).json('unable to send message'))
+}
+
+async function getChatHistory() {
+    try {
+        const response = await fetch('http://localhost:4000/chathistory', {
+            method: 'get',
+            // headers: {'Content-Type': 'application/json'},
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const chatHistory = await response.json();
+        const chatHistorySorted = chatHistory.sort((a, b) => {
+            // Sort the array of messages (in json) by the message's time
+            const timeA = new Date(a.time);
+            const timeB = new Date(b.time);
+            return timeA - timeB;
+          });
+        return chatHistorySorted;
+    } catch (error) {
+        console.error('Error fetching chat history:', error);
+    }
+}
 
 app.get('/', (req, res) => {
     res.send('success');
@@ -112,7 +191,8 @@ app.post('/chathistory', (req, res) => {
         .then(messages => {
             res.json(messages[0])
         })
-        .catch(err => res.status(400).json('unable to send message'))
+        .catch(err => res.status(400).json(err))
+        // .catch(err => res.status(400).json('unable to send message'))
 })
 
 app.put('/chathistory/upvote', (req, res) => {
@@ -140,11 +220,6 @@ app.put('/chathistory/downvote', (req, res) => {
         // .catch(err => res.status(400).json('unable to record upvote'))
 })
 
-// app.get('/chathistory', (req, res) =>{
-//     db.select('*').from('chathistory')
-//         .then(res.json())
-//     .catch(err => res.status(400).json('error getting chat history'))
-// })
 
 io.on('connection', (socket) => {
     console.log('a user connected');
@@ -153,9 +228,13 @@ io.on('connection', (socket) => {
     });
 });
 
-server.listen(3000, () => {
-    console.log('server is running on port 3000');
-});
+
+http.listen(PORT, () => {
+    console.log(`Server listening on ${PORT}`);
+  });
+// server.listen(3000, () => {
+//     console.log('server is running on port 3000');
+// });
 
 /*
 / --> res = this is working
