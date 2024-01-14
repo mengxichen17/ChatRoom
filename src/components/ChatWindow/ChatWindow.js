@@ -7,29 +7,8 @@ import { Button } from "react-chat-elements";
 
 //chat-history table: name, message, time, upvote, downvote
 
-const ChatWindow = ({ chatHistory, loadHistory, onInputChange, onButtonSubmit, onButtonUpvote, onButtonDownvote}) =>  {
+const ChatWindow = ({ chatHistory, onInputChange, onButtonSubmit, onButtonUpvote, onButtonDownvote}) =>  {
 
-    // loadHistory = () => {
-    //     fetch('http://localhost:3000/chathistory', {
-    //             method: 'get',
-    //             // headers: {'Content-Type': 'application/json'},
-    //         })
-    //             .then(response => response.json())
-    //             .then(chatHistory => {
-                    
-    //                 this.setState(Object.assign(this.state.chatHistory, chatHistory));
-    //             })
-    //             .catch(console.log)
-    // }
-
-
-    // onNewMessage = (event) => {
-    //     console.log(event.target.value);
-    // }
-
-    // onButtonSend = (event) => {
-    //     console.log(event.target.value);
-    // }
     
         return (
                 // <MessageBox
