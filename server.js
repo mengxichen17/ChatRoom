@@ -40,23 +40,22 @@ const socketIO = require('socket.io')(http, {
 socketIO.on('connection', (socket) => {
     console.log(`⚡: ${socket.id} user just connected!`);
 
-    // getChatHistory()
-    //     .then(chatHistory => {
-    //         console.log(chatHistory.length)
-    //         socket.emit('initialization', chatHistory);
-    //     })
-    //     .catch(err => console.error("Error"))
-
     //Listens and logs the message to the console
     socket.on('message', (data) => {
+        console.log(data);
         storeMessage(data);
-        // getChatHistory()
-        //     .then(chatHistory => {
-        //         socketIO.emit('messageResponse', chatHistory);
-        //     })
-        //     .catch(err => console.error("Error"))
         socketIO.emit('messageResponse', data);
     });
+
+    socket.on('message_upvote', (data) =>{
+        console.log("this message id got upvoted: ", data);
+        updateVote(data, upvote=true);
+    })
+
+    socket.on('message_downvote', (data) =>{
+        console.log("this message id got downvoted: ", data);
+        updateVote(data, upvote=false);
+    })
 
     socket.on('disconnect', () => {
       console.log('🔥: A user disconnected');
@@ -70,7 +69,10 @@ function storeMessage(data) {
             body: JSON.stringify({
                 name: data.name,
                 message: data.message,
-                time: new Date()
+                time: data.time,
+                message_id: data.message_id,
+                upvotes: 0,
+                downvotes: 0
             })
         })
         .then(response => response.json())
@@ -79,7 +81,25 @@ function storeMessage(data) {
                 console.log(message);
             }
         })
-        .catch(err => res.status(400).json('unable to send message'))
+        .catch(err => console.log('unable to send message'))
+}
+
+function updateVote(data, isUpVote) {
+    let url = 'http://localhost:4000/chathistory';
+    if (isUpVote) {
+        url = url.concat("/upvote");
+    } else {
+        url = url.concat('/downvote');
+    }
+
+    fetch(url, {
+        method: 'put',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            message_id: data.message_id
+        })
+        })
+        .catch(err => console.log(`unable to ${isUpVote?'upvote':'downvote'} message`, err))
 }
 
 async function getChatHistory() {
@@ -180,13 +200,14 @@ app.get('/chathistory', (req, res) =>{
 })
 
 app.post('/chathistory', (req, res) => {
-    const { name, message } = req.body;
+    const { name, message, message_id, time } = req.body;
     db('chathistory')
         .returning('*')
         .insert({
             name: name,
             message: message,
-            time: new Date()
+            time: time,
+            message_id: message_id
         })
         .then(messages => {
             res.json(messages[0])
@@ -196,9 +217,9 @@ app.post('/chathistory', (req, res) => {
 })
 
 app.put('/chathistory/upvote', (req, res) => {
-    const { id } = req.body;
+    const { message_id } = req.body;
     db('chathistory')
-        .where('id', '=', id)
+        .where('message_id', '=', message_id)
         .increment('upvotes', 1)
         .returning('upvotes')
         .then(upvotes => {
@@ -208,9 +229,9 @@ app.put('/chathistory/upvote', (req, res) => {
 })
 
 app.put('/chathistory/downvote', (req, res) => {
-    const { id } = req.body;
+    const { message_id } = req.body;
     db('chathistory')
-        .where('id', '=', id)
+        .where('message_id', '=', message_id)
         .increment('downvotes', 1)
         .returning('downvotes')
         .then(downvotes => {
