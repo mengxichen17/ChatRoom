@@ -8,9 +8,14 @@ const ChatFooter = ({ socket, username }) => {
     // if (message.trim() && localStorage.getItem('userName')) {
     if (message.trim()) {
         socket.emit('message', {
-          message: message,
           name: username,
-        //   id: `${socket.id}${Math.random()}`,
+          message: message,
+          upvotes: 0,
+          downvotes: 0,
+          time: new Date(),
+          message_id: `${socket.id}${Math.random()}`,
+          upvotes: 0,
+          downvotes: 0
         //   socketID: socket.id,
         });
     }

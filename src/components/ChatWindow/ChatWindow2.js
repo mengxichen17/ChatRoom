@@ -3,7 +3,7 @@ import ChatBar from './ChatBar';
 import ChatBody from './ChatBody';
 import ChatFooter from './ChatFooter';
 
-const ChatPage = ({ socket, onRouteChange, username, chatHistory }) => {
+const ChatWidow = ({ socket, onRouteChange, username, chatHistory }) => {
     const [messages, setMessages] = useState(chatHistory);  
     const [typingStatus, setTypingStatus] = useState('');
     const lastMessageRef = useRef(null); 
@@ -11,7 +11,7 @@ const ChatPage = ({ socket, onRouteChange, username, chatHistory }) => {
     useEffect(() => {
         socket.on('messageResponse', (data) => setMessages([...messages, data]));
       }, [socket, messages]);
-
+    // console.log("messages: ", messages);
 
     useEffect(() => {
     // scroll to bottom every time messages change
@@ -29,4 +29,4 @@ const ChatPage = ({ socket, onRouteChange, username, chatHistory }) => {
     );
 };
 
-export default ChatPage;
+export default ChatWidow;

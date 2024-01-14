@@ -203,3 +203,39 @@
   font-size: 13px;
   font-style: italic;
 }
+
+.vote__buttons {
+  position:inherit;
+  top: 0;
+  right: 5px;
+  display:inline-flex;
+  flex-direction:row;
+}
+
+.vote__button {
+  margin-bottom: 5px;
+  /* Add any additional styling for your buttons */
+  background-color: #04AA6D; /* Green */
+  border: none;
+  color: white;
+  padding: 5px 12px;
+  margin: 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 10px;
+}
+
+.vote__other_button{
+  margin-bottom: 5px;
+  /* Add any additional styling for your buttons */
+  background-color: #7e215f; /* Green */
+  border: none;
+  color: white;
+  padding: 5px 12px;
+  margin: 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 10px;
+}

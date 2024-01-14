@@ -27,7 +27,27 @@ class App extends Component {
       }
     }
   }
-  
+
+  componentDidMount() {
+    fetch('http://localhost:4000/chathistory', {
+                method: 'get',
+                // headers: {'Content-Type': 'application/json'},
+            })
+          .then(response => response.json())
+          .then(chatHistory => {
+            const chatHistorySorted = chatHistory.sort((a, b) => {
+              // Sort the array of messages (in json) by the message's time
+              const timeA = new Date(a.time);
+              const timeB = new Date(b.time);
+              return timeA - timeB;
+            });
+            const result = chatHistorySorted.map(({name, message, time, message_id, upvotes, downvotes}) => ({name, message, time, message_id, upvotes, downvotes}));
+            this.setState({chatHistory: result});
+          })
+          .catch(err => console.log('Error fetching chat history:', err))
+          ;
+  }  
+
   loadUser = (data) => {
     this.setState({user: {
       id: data.id,
@@ -37,26 +57,6 @@ class App extends Component {
       }
     })
   }
-
-  // loadHistory = () => {
-  //   fetch('http://localhost:4000/chathistory', {
-  //           method: 'get',
-  //           // headers: {'Content-Type': 'application/json'},
-  //       })
-  //           .then(response => response.json())
-  //           .then(chatHistory => {
-  //             const chatHistorySorted = chatHistory.sort((a, b) => {
-  //               // Sort the array of messages (in json) by the message's time
-  //               const timeA = new Date(a.time);
-  //               const timeB = new Date(b.time);
-  //               return timeA - timeB;
-  //             });
-  //             // console.log(chatHistory);              
-  //             this.setState({chatHistory: chatHistorySorted})
-  //           })
-  //           .catch(console.log)
-  // }
-
 
   onButtonUpvote = (message_id) => {
     fetch('http://localhost:4000/chathistory/upvote', {
@@ -77,26 +77,6 @@ class App extends Component {
               id: message_id
             })
           })
-  }
-
-  componentDidMount() {
-    fetch('http://localhost:4000/chathistory', {
-                method: 'get',
-                // headers: {'Content-Type': 'application/json'},
-            })
-          .then(response => response.json())
-          .then(chatHistory => {
-            const chatHistorySorted = chatHistory.sort((a, b) => {
-              // Sort the array of messages (in json) by the message's time
-              const timeA = new Date(a.time);
-              const timeB = new Date(b.time);
-              return timeA - timeB;
-            });
-            const result = chatHistorySorted.map(({name, message}) => ({name, message}));
-            this.setState({chatHistory: result});
-          })
-          .catch(err => console.log('Error fetching chat history:', err))
-          ;
   }
 
   onInputChange = (event) => {
