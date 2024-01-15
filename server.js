@@ -42,7 +42,6 @@ socketIO.on('connection', (socket) => {
 
     //Listens and logs the message to the console
     socket.on('message', (data) => {
-        console.log(data);
         storeMessage(data);
         socketIO.emit('messageResponse', data);
     });
