@@ -50,11 +50,13 @@ socketIO.on('connection', (socket) => {
     socket.on('message_upvote', (data) =>{
         console.log("this message id got upvoted: ", data);
         updateVote(data, upvote=true);
+        socketIO.emit('message_upvote_updated', data);
     })
 
     socket.on('message_downvote', (data) =>{
         console.log("this message id got downvoted: ", data);
         updateVote(data, upvote=false);
+        socketIO.emit('message_downvote_updated', data)
     })
 
     socket.on('disconnect', () => {
