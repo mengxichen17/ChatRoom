@@ -11,6 +11,24 @@ const ChatWidow = ({ socket, onRouteChange, username, chatHistory }) => {
     useEffect(() => {
         socket.on('messageResponse', (data) => setMessages([...messages, data]));
       }, [socket, messages]);
+
+    // useEffect(() => {
+    //     socket.on('message_upvote_updated', (data) => {
+    //         console.log("received signal that one message upvoted: ", data);
+    //         console.log("voted by: ", data.sender, " username: ", username);
+    //         if (data.sender != username) {
+    //             // only need to update when it's voted by other senders
+    //             messages.forEach(message => {
+    //             if (message.message_id === data.message_id) {
+    //                 message.upvotes = parseInt(message.upvotes) + 1;
+    //             }
+    //             // console.log("after message_upvote_updated: ", messages)
+    //             setMessages([...messages]);
+    //             });
+    //         }
+    //         console.log("after message_upvote_updated: ", messages)
+    //     });
+    // }, [socket, messages]);
     // console.log("messages: ", messages);
 
     useEffect(() => {

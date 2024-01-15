@@ -4,12 +4,20 @@ import Message from './Message';
 
 const ChatBody = ({ messages, lastMessageRef, onRouteChange, username, socket }) => {
 //   const navigate = useNavigate();
+    // const [messages, setMessages] = useState(messages); 
     const [currUpvotes, setCurrUpvotes] = useState(0);
     const [activeMessageUpButton, setActiveMessageUpButton] = React.useState("");
 
     // useEffect(() => {
-    //     socket.on('initialization', (data) => setChatHistory([...chatHistory, data[0]]));
-    // }, [socket, chatHistory]);
+    //     socket.on('message_upvote_updated', (data) => {
+    //         messages.forEach(message => {
+    //             if (message.message_id === data) {
+    //                 message.upvotes += 1;
+    //             }
+    //         });
+    //         return [...messages];
+    //     });
+    // }, [socket, messages]);
 
     // console.log("FROM chatbody", chatHistory);
 
