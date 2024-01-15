@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-// import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navigation from './components/Navigation/Navigation';
 import Logo from './components/Logo/Logo';
-import ChatWindow from './components/ChatWindow/ChatWindow2';
+import ChatWindow from './components/ChatWindow/ChatWindow';
 import Greeting from './components/Greeting/Greeting';
-import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Signin from './components/Signin/Signin';
 import Register from './components/Register/Register';
 import './App.css';
@@ -30,22 +28,22 @@ class App extends Component {
 
   componentDidMount() {
     fetch('http://localhost:4000/chathistory', {
-                method: 'get',
-                // headers: {'Content-Type': 'application/json'},
-            })
-          .then(response => response.json())
-          .then(chatHistory => {
-            const chatHistorySorted = chatHistory.sort((a, b) => {
-              // Sort the array of messages (in json) by the message's time
-              const timeA = new Date(a.time);
-              const timeB = new Date(b.time);
-              return timeA - timeB;
-            });
-            const result = chatHistorySorted.map(({name, message, time, message_id, upvotes, downvotes}) => ({name, message, time, message_id, upvotes, downvotes}));
-            this.setState({chatHistory: result});
-          })
-          .catch(err => console.log('Error fetching chat history:', err))
-          ;
+          method: 'get',
+          // headers: {'Content-Type': 'application/json'},
+        })
+      .then(response => response.json())
+      .then(chatHistory => {
+        const chatHistorySorted = chatHistory.sort((a, b) => {
+          // Sort the array of messages (in json) by the message's time
+          const timeA = new Date(a.time);
+          const timeB = new Date(b.time);
+          return timeA - timeB;
+        });
+        const result = chatHistorySorted.map(({name, message, time, message_id, upvotes, downvotes}) => ({name, message, time, message_id, upvotes, downvotes}));
+        console.log(chatHistory, chatHistorySorted, result);
+        this.setState({chatHistory: result});
+      })
+      .catch(err => console.log('Error fetching chat history:', err));
   }  
 
   loadUser = (data) => {
@@ -56,36 +54,6 @@ class App extends Component {
       joined: data.joined
       }
     })
-  }
-
-  onButtonUpvote = (message_id) => {
-    fetch('http://localhost:4000/chathistory/upvote', {
-            method: 'put',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-              id: message_id
-            })
-          })
-    
-  }
-
-  onButtonDownvote = (message_id) => {
-    fetch('http://localhost:4000/chathistory/downvote', {
-            method: 'put',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-              id: message_id
-            })
-          })
-  }
-
-  onInputChange = (event) => {
-    console.log(event.target.value);
-  }
-
-  onButtonSubmit = () => {
-    // Receive the sent message
-    
   }
 
   onRouteChange = (route) => {
@@ -100,11 +68,11 @@ class App extends Component {
   render() {
     const { isSignedIn, route } = this.state;
     return (
-      <div className="App">
+      <div className="App" >
         <Navigation isSignedin={isSignedIn} onRouteChange={this.onRouteChange}/>
         <Logo />
         { route === 'home'
-          ? <div>
+          ? <div style={{ marginLeft: 'auto' }}>
           <Greeting 
             name={this.state.user.name}
           />
@@ -113,12 +81,7 @@ class App extends Component {
             onRouteChange={this.onRouteChange}
             username={this.state.user.name}
             chatHistory={this.state.chatHistory}
-            onInputChange={this.onInputChange} 
-            onButtonSubmit={this.onButtonSubmit}
-            onButtonUpvote={this.onButtonUpvote}
-            onButtonDownvote={this.onButtonDownvote}
           />
-          {/* <FaceRecognition /> */}
         </div>
           : (
             route === 'signin'

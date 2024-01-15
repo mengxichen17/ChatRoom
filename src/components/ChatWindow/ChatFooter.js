@@ -5,18 +5,15 @@ const ChatFooter = ({ socket, username }) => {
 
   const handleSendMessage = (e) => {
     e.preventDefault();
-    // if (message.trim() && localStorage.getItem('userName')) {
     if (message.trim()) {
+        const time = new Date();
         socket.emit('message', {
           name: username,
           message: message,
           upvotes: 0,
           downvotes: 0,
-          time: new Date(),
+          time: time,
           message_id: `${socket.id}${Math.random()}`,
-          upvotes: 0,
-          downvotes: 0
-        //   socketID: socket.id,
         });
     }
     setMessage('');

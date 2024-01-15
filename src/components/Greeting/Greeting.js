@@ -6,11 +6,6 @@ const Greeting = ({ name }) => {
             <div className="white f3" style={{display: 'flex', justifyContent: 'center'}}>
                 {`Hello ${name}, Welcome to Nimble Chat Room!`}
             </div>
-            {/* <div className="white f1">
-                {
-                    `Chat Box Here: ${chatHistory}`
-                }
-            </div> */}
             
         </div>
     )

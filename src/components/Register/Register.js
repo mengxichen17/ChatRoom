@@ -26,14 +26,23 @@ class Register extends React.Component {
                 password: this.state.password
             })
         })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(() => { 
+                        alert("Username already exists, please use another one and try again.");
+                    })
+                }
+                return response.json()
+            })
             .then(user => {
-                if (user.id) {
+                if (!user.ok) {
+                alert("Username already exists, please try again.")
+                } else if (user.id) {
                     this.props.loadUser(user);
                     this.props.onRouteChange('home');
                 }
             })
-        
+            .catch(err => console.log("Registration unsuccessful"))
     }
 
     render() {
