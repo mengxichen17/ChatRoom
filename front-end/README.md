@@ -1,5 +1,4 @@
-# NimbleChatRoom
-72-hour Hackthon by Nimble Robotics
+# NimbleChatRoom - Front End
 
 **Author: Mengxi Chen**
 
