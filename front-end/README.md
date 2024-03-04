@@ -5,7 +5,7 @@
 ## Introduction
 This is a full-stack application which can realize real-time chat in a public chatting room.
 
-<<<<<<< HEAD
+
 **Front-end** features: (in React.js)
 <ul>
     <li>Users can see previous chat history after successfully loggin in. </li>
@@ -14,7 +14,8 @@ This is a full-stack application which can realize real-time chat in a public ch
     <li>Each message has a time stamp on it (in UTC time zone). </li>
     <li>Each message has two voting buttons, which allows users to upvote &#8679;/downvote &#8681; on a specific message. </li>
     <li>Voting is also real-time. </li>
-=======
+</ul>
+
 **Back-end** features: (in Node.js & Express.js)
 <ul>
     <li>Server can store users' username and password in database (PostgreSQL). </li>
@@ -23,7 +24,6 @@ This is a full-stack application which can realize real-time chat in a public ch
     <li>Server will check if password entered is correct in login requests and if username already exists in sign-up requests. </li>
     <li>All messages are stored in database. </li>
     <li>Race conditions for voting functionality is handled. </li>
->>>>>>> nimble_chat_room_be/main
 </ul>
 
 ## To Run The App
@@ -31,8 +31,8 @@ First, create the required tables in your database. Please make sure to update t
 
 Then, in `/nimble_chat_room_be`, run `npm install`, then `npm start` to start the server.
 
-<<<<<<< HEAD
+
 Lastly, in `/nimble_chat_room`, run `npm install`, then `npm start` to start the application. The first browser tab should be opened up automatically. To have multiple users logging in, you can open multiple tabs now.
-=======
+
 Lastly, in `/nimble_chat_room`, run `npm install`, then `npm start` to start the application. The first browser tab should be opened up automatically. To have multiple users logging in, you can open multiple tabs now.
->>>>>>> nimble_chat_room_be/main
+
