@@ -9,7 +9,7 @@ This is a full-stack application which can realize real-time chat in a public ch
 <ul>
     <li>Users can see previous chat history after successfully logging in. </li>
     <li>To register, username must be unique. </li>
-    <li>Users can send message to everyone. </li>
+    <li>Users can send messages to everyone. </li>
     <li>Each message has a time stamp on it (in UTC time zone). </li>
     <li>Each message has two voting buttons, which allows users to upvote &#8679;/downvote &#8681; on a specific message. </li>
     <li>Voting is also real-time. </li>
@@ -22,7 +22,7 @@ This is a full-stack application which can realize real-time chat in a public ch
     <li>Server will accept sign-up requests and login requests. </li>
     <li>Server will check if password entered is correct in login requests and if username already exists in sign-up requests. </li>
     <li>All messages are stored in database. </li>
-    <li>Race conditions for voting functionality is handled. </li>
+    <li>Race conditions for voting functionality are handled. </li>
 </ul>
 
 ## To Run The App
