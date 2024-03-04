@@ -2,6 +2,8 @@
 
 **Author: Mengxi Chen**
 
+[Demo Video](https://drive.google.com/file/d/1LfpnlkuVO49OxjM-Bu3exST1IdMyXVBJ/view?usp=sharing)
+
 ## Introduction
 This is a full-stack application which can realize real-time chat in a public chatting room.
 
