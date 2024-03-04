@@ -7,7 +7,7 @@ This is a full-stack application which can realize real-time chat in a public ch
 
 **Front-end** features: (in React.js)
 <ul>
-    <li>Users can see previous chat history after successfully loggin in. </li>
+    <li>Users can see previous chat history after successfully logging in. </li>
     <li>To register, username must be unique. </li>
     <li>Users can send message to everyone. </li>
     <li>Each message has a time stamp on it (in UTC time zone). </li>
